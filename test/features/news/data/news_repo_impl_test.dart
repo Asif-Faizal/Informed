@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -53,6 +54,32 @@ void main() {
       newsRepoImpl.getQueryNews(tQuery);
       // assert
       verify(networkInfo.isConnected);
+    });
+
+    group('Device is Online', () {
+      setUp(() {
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+      });
+      test('Should return remote data when the call is Success', () async {
+        // arrange
+        when(newsRemoteDatasource.getQueryNews(any))
+            .thenAnswer((_) async => tNewsModel1);
+
+        // act
+        final result =
+            await newsRepoImpl.getQueryNews(tQuery); // Await the result
+
+        // assert
+        verify(newsRemoteDatasource
+            .getQueryNews(tQuery)); // Verify the call was made
+        expect(result, Right(newsEntity1)); // Assert the result is as expected
+      });
+    });
+
+    group('Device is Offline', () {
+      setUp(() {
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+      });
     });
   });
 }
