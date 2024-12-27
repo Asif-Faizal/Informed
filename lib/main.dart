@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'features/news/presentation/screen/home_screen.dart';
+import 'core/injection/dependency_injection.dart' as di;
 
-void main() {
+void main()async {
+  await di.initDependencies();
   runApp(const MyApp());
 }
 
