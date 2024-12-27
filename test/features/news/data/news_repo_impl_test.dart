@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tdd_clean/core/connection/network_info.dart';
+import 'package:tdd_clean/core/error/exceptions.dart';
+import 'package:tdd_clean/core/error/failures.dart';
 import 'package:tdd_clean/features/news/data/news_local_datasource.dart';
 import 'package:tdd_clean/features/news/data/news_model.dart';
 import 'package:tdd_clean/features/news/data/news_remote_datasource.dart';
@@ -156,6 +158,22 @@ void main() {
               .getQueryNews(tQuery)); // Verify the call was made
           verify(newsLocalDatasource.cacheNews(tNewsModel2));
         });
+        test('Should return server failure when the call is Failure', () async {
+          // arrange
+          when(newsRemoteDatasource.getQueryNews(any))
+              .thenThrow(ServerException('Error'));
+
+          // act
+          final result = await newsRepoImpl.getQueryNews(
+              tQuery); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource.getQueryNews(
+              tQuery)); // Verify the call was made
+          verifyZeroInteractions(newsLocalDatasource);
+          expect(result,
+              Left(ServerFailure('Error'))); // Assert the result is as expected
+        });
       });
 
       group('Country wise News', () {
@@ -163,16 +181,16 @@ void main() {
             'Should return remote data when the call is Success for nullable Response',
             () async {
           // arrange
-          when(newsRemoteDatasource.getCountryNews(any,any))
+          when(newsRemoteDatasource.getCountryNews(any, any))
               .thenAnswer((_) async => tNewsModel1);
 
           // act
-          final result =
-              await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+          final result = await newsRepoImpl.getCountryNews(
+              tCountry, tCategory); // Await the result
 
           // assert
-          verify(newsRemoteDatasource
-              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          verify(newsRemoteDatasource.getCountryNews(
+              tCountry, tCategory)); // Verify the call was made
           expect(
               result, Right(newsEntity1)); // Assert the result is as expected
         });
@@ -180,16 +198,16 @@ void main() {
             'Should return remote data when the call is Success for non nullable Response',
             () async {
           // arrange
-          when(newsRemoteDatasource.getCountryNews(any,any))
+          when(newsRemoteDatasource.getCountryNews(any, any))
               .thenAnswer((_) async => tNewsModel2);
 
           // act
-          final result =
-              await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+          final result = await newsRepoImpl.getCountryNews(
+              tCountry, tCategory); // Await the result
 
           // assert
-          verify(newsRemoteDatasource
-              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          verify(newsRemoteDatasource.getCountryNews(
+              tCountry, tCategory)); // Verify the call was made
           expect(
               result, Right(newsEntity2)); // Assert the result is as expected
         });
@@ -199,15 +217,16 @@ void main() {
             'Should return local data when the call is Success for nullable Response',
             () async {
           // arrange
-          when(newsRemoteDatasource.getCountryNews(any,any))
+          when(newsRemoteDatasource.getCountryNews(any, any))
               .thenAnswer((_) async => tNewsModel1);
 
           // act
-          await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+          await newsRepoImpl.getCountryNews(
+              tCountry, tCategory); // Await the result
 
           // assert
-          verify(newsRemoteDatasource
-              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          verify(newsRemoteDatasource.getCountryNews(
+              tCountry, tCategory)); // Verify the call was made
           verify(newsLocalDatasource.cacheNews(tNewsModel1));
         });
 
@@ -215,17 +234,34 @@ void main() {
             'Should return local data when the call is Success for non nullable Response',
             () async {
           // arrange
-          when(newsRemoteDatasource.getCountryNews(any,any))
+          when(newsRemoteDatasource.getCountryNews(any, any))
               .thenAnswer((_) async => tNewsModel2);
 
           // act
-          await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+          await newsRepoImpl.getCountryNews(
+              tCountry, tCategory); // Await the result
 
           // assert
-          verify(newsRemoteDatasource
-              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          verify(newsRemoteDatasource.getCountryNews(
+              tCountry, tCategory)); // Verify the call was made
           verify(newsLocalDatasource.cacheNews(tNewsModel2));
         });
+      });
+      test('Should return server failure when the call is Failure', () async {
+        // arrange
+        when(newsRemoteDatasource.getCountryNews(any, any))
+            .thenThrow(ServerException('Error'));
+
+        // act
+        final result = await newsRepoImpl.getCountryNews(
+            tCountry, tCategory); // Await the result
+
+        // assert
+        verify(newsRemoteDatasource.getCountryNews(
+            tCountry, tCategory)); // Verify the call was made
+        verifyZeroInteractions(newsLocalDatasource);
+        expect(result,
+            Left(ServerFailure('Error'))); // Assert the result is as expected
       });
     });
 

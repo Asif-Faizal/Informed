@@ -28,7 +28,7 @@ class NewsRepoImpl implements NewsRepo {
         newsLocalDatasource.cacheNews(remoteNews);
         return Right(remoteNews);
       } catch (e) {
-        return Left(ServerFailure(''));
+        return Left(ServerFailure('Error'));
       }
     } else {
       final localNews = await newsLocalDatasource.getLastNews();
@@ -44,7 +44,7 @@ class NewsRepoImpl implements NewsRepo {
         newsLocalDatasource.cacheNews(remoteNews);
         return Right(remoteNews);
       } catch (e) {
-        return Left(ServerFailure(''));
+        return Left(ServerFailure('Error'));
       }
     } else {
       final localNews = await newsLocalDatasource.getLastNews();
