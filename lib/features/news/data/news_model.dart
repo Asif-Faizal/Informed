@@ -48,7 +48,7 @@ class NewsModel extends NewsEntity {
       'description': description,
       'url': url,
       'urlToImage': urlToImage,
-      'publishedAt': publishedAt.toIso8601String(),
+      'publishedAt': publishedAt.toUtc().toIso8601String().replaceAll('.000Z', 'Z'),
       'content': content,
     };
   }
