@@ -14,17 +14,39 @@ class NewsRepoImpl implements NewsRepo {
   final NewsLocalDatasource newsLocalDatasource;
   final NetworkInfo networkInfo;
 
-  NewsRepoImpl({required this.newsRemoteDatasource, required this.newsLocalDatasource, required this.networkInfo});
+  NewsRepoImpl({
+    required this.newsRemoteDatasource,
+    required this.newsLocalDatasource,
+    required this.networkInfo,
+  });
 
   @override
-  Future<Either<Failure, NewsEntity>> getCountryNews(String country, String category) {
-    // TODO: implement getCountryNews
-    throw UnimplementedError();
+  Future<Either<Failure, NewsEntity>> getCountryNews(String country, String category) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteNews = await newsRemoteDatasource.getCountryNews(country, category);
+        return Right(remoteNews);
+      } catch (e) {
+        return Left(ServerFailure(''));
+      }
+    } else {
+      final localNews = await newsLocalDatasource.getLastNews();
+      return Right(localNews);
+    }
   }
 
   @override
-  Future<Either<Failure, NewsEntity>> getQueryNews(String query) {
-    // TODO: implement getQueryNews
-    throw UnimplementedError();
+  Future<Either<Failure, NewsEntity>> getQueryNews(String query) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteNews = await newsRemoteDatasource.getQueryNews(query);
+        return Right(remoteNews);
+      } catch (e) {
+        return Left(ServerFailure(''));
+      }
+    } else {
+      final localNews = await newsLocalDatasource.getLastNews();
+      return Right(localNews);
+    }
   }
 }
