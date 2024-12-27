@@ -18,8 +18,21 @@ class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
   NewsRemoteDatasourceImpl({required this.client});
 
   @override
-  Future<NewsModel> getCountryNews(String country, String category) {
-    throw UnimplementedError();
+  Future<NewsModel> getCountryNews(String country, String category) async{
+    final response = await client.get(
+      Uri.parse(
+        "https://newsapi.org/v2/top-headlines?country=$country&category=$category&apiKey=d26344a4cc7045a895af69f018609a64",
+      ),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return NewsModel.fromJson(json.decode(response.body));
+    } else {
+    throw ServerException('Error');
+  }
   }
 
   @override
