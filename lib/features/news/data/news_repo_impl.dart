@@ -25,6 +25,7 @@ class NewsRepoImpl implements NewsRepo {
     if (await networkInfo.isConnected) {
       try {
         final remoteNews = await newsRemoteDatasource.getCountryNews(country, category);
+        newsLocalDatasource.cacheNews(remoteNews);
         return Right(remoteNews);
       } catch (e) {
         return Left(ServerFailure(''));
@@ -40,6 +41,7 @@ class NewsRepoImpl implements NewsRepo {
     if (await networkInfo.isConnected) {
       try {
         final remoteNews = await newsRemoteDatasource.getQueryNews(query);
+        newsLocalDatasource.cacheNews(remoteNews);
         return Right(remoteNews);
       } catch (e) {
         return Left(ServerFailure(''));

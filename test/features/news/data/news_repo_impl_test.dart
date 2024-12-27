@@ -32,6 +32,8 @@ void main() {
 
   group('Get Query News', () {
     final tQuery = 'query';
+    final tCountry = 'country';
+    final tCategory = 'category';
     final tNewsModel1 = NewsModel(
       sourceId: null,
       sourceName: 'Reuters',
@@ -47,7 +49,23 @@ void main() {
     );
     final NewsEntity newsEntity1 = tNewsModel1;
 
-    test('should check if the device is online', () async {
+    final tNewsModel2 = NewsModel(
+      sourceId: '28734685',
+      sourceName: 'Reuters',
+      author: 'Reuters',
+      title:
+          'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
+      description: 'Passenger plane crashed',
+      url:
+          'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
+      urlToImage: 'http://example.com',
+      publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
+      content:
+          'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
+    );
+    final NewsEntity newsEntity2 = tNewsModel2;
+
+    test('should check if the device is online for query news', () async {
       // arrange
       when(networkInfo.isConnected).thenAnswer((_) async => true);
       // act
@@ -56,23 +74,158 @@ void main() {
       verify(networkInfo.isConnected);
     });
 
+    test('should check if the device is online for country wise news',
+        () async {
+      // arrange
+      when(networkInfo.isConnected).thenAnswer((_) async => true);
+      // act
+      newsRepoImpl.getCountryNews(tCountry, tCategory);
+      // assert
+      verify(networkInfo.isConnected);
+    });
+
     group('Device is Online', () {
       setUp(() {
         when(networkInfo.isConnected).thenAnswer((_) async => true);
       });
-      test('Should return remote data when the call is Success', () async {
-        // arrange
-        when(newsRemoteDatasource.getQueryNews(any))
-            .thenAnswer((_) async => tNewsModel1);
+      group('Query News', () {
+        test(
+            'Should return remote data when the call is Success for nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getQueryNews(any))
+              .thenAnswer((_) async => tNewsModel1);
 
-        // act
-        final result =
-            await newsRepoImpl.getQueryNews(tQuery); // Await the result
+          // act
+          final result =
+              await newsRepoImpl.getQueryNews(tQuery); // Await the result
 
-        // assert
-        verify(newsRemoteDatasource
-            .getQueryNews(tQuery)); // Verify the call was made
-        expect(result, Right(newsEntity1)); // Assert the result is as expected
+          // assert
+          verify(newsRemoteDatasource
+              .getQueryNews(tQuery)); // Verify the call was made
+          expect(
+              result, Right(newsEntity1)); // Assert the result is as expected
+        });
+        test(
+            'Should return remote data when the call is Success for non nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getQueryNews(any))
+              .thenAnswer((_) async => tNewsModel2);
+
+          // act
+          final result =
+              await newsRepoImpl.getQueryNews(tQuery); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource
+              .getQueryNews(tQuery)); // Verify the call was made
+          expect(
+              result, Right(newsEntity2)); // Assert the result is as expected
+        });
+
+        // LOCAL
+        test(
+            'Should return local data when the call is Success for nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getQueryNews(any))
+              .thenAnswer((_) async => tNewsModel1);
+
+          // act
+          await newsRepoImpl.getQueryNews(tQuery); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource
+              .getQueryNews(tQuery)); // Verify the call was made
+          verify(newsLocalDatasource.cacheNews(tNewsModel1));
+        });
+
+        test(
+            'Should return local data when the call is Success for non nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getQueryNews(any))
+              .thenAnswer((_) async => tNewsModel2);
+
+          // act
+          await newsRepoImpl.getQueryNews(tQuery); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource
+              .getQueryNews(tQuery)); // Verify the call was made
+          verify(newsLocalDatasource.cacheNews(tNewsModel2));
+        });
+      });
+
+      group('Country wise News', () {
+        test(
+            'Should return remote data when the call is Success for nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getCountryNews(any,any))
+              .thenAnswer((_) async => tNewsModel1);
+
+          // act
+          final result =
+              await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource
+              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          expect(
+              result, Right(newsEntity1)); // Assert the result is as expected
+        });
+        test(
+            'Should return remote data when the call is Success for non nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getCountryNews(any,any))
+              .thenAnswer((_) async => tNewsModel2);
+
+          // act
+          final result =
+              await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource
+              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          expect(
+              result, Right(newsEntity2)); // Assert the result is as expected
+        });
+
+        // LOCAL
+        test(
+            'Should return local data when the call is Success for nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getCountryNews(any,any))
+              .thenAnswer((_) async => tNewsModel1);
+
+          // act
+          await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource
+              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          verify(newsLocalDatasource.cacheNews(tNewsModel1));
+        });
+
+        test(
+            'Should return local data when the call is Success for non nullable Response',
+            () async {
+          // arrange
+          when(newsRemoteDatasource.getCountryNews(any,any))
+              .thenAnswer((_) async => tNewsModel2);
+
+          // act
+          await newsRepoImpl.getCountryNews(tCountry,tCategory); // Await the result
+
+          // assert
+          verify(newsRemoteDatasource
+              .getCountryNews(tCountry,tCategory)); // Verify the call was made
+          verify(newsLocalDatasource.cacheNews(tNewsModel2));
+        });
       });
     });
 
