@@ -246,7 +246,6 @@ void main() {
               tCountry, tCategory)); // Verify the call was made
           verify(newsLocalDatasource.cacheNews(tNewsModel2));
         });
-      });
       test('Should return server failure when the call is Failure', () async {
         // arrange
         when(newsRemoteDatasource.getCountryNews(any, any))
@@ -263,12 +262,64 @@ void main() {
         expect(result,
             Left(ServerFailure('Error'))); // Assert the result is as expected
       });
+      });
     });
 
     group('Device is Offline', () {
       setUp(() {
-        when(networkInfo.isConnected).thenAnswer((_) async => true);
+        when(networkInfo.isConnected).thenAnswer((_) async => false);
       });
+      test('Should return last cached data when cached data is Success for Query News',
+        ()async{
+          // arrange
+          when(newsLocalDatasource.getLastNews()).thenAnswer((_) async => tNewsModel1);
+          // act
+          final result = await newsRepoImpl.getQueryNews(tQuery);
+          // assert
+          verifyZeroInteractions(newsRemoteDatasource);
+          verify(newsLocalDatasource.getLastNews());
+          expect(result, equals(Right(tNewsModel1)));
+        }
+      );
+
+      test('Should return last cached data when cached data is Success for Country wise News',
+        ()async{
+          // arrange
+          when(newsLocalDatasource.getLastNews()).thenAnswer((_) async => tNewsModel1);
+          // act
+          final result = await newsRepoImpl.getCountryNews(tCountry,tCategory);
+          // assert
+          verifyZeroInteractions(newsRemoteDatasource);
+          verify(newsLocalDatasource.getLastNews());
+          expect(result, equals(Right(tNewsModel1)));
+        }
+      );
+
+      test('Should return Cache failure when there is no cached data present for Query news',
+        ()async{
+          // arrange
+          when(newsLocalDatasource.getLastNews()).thenThrow(CacheException('Error'));
+          // act
+          final result = await newsRepoImpl.getQueryNews(tQuery);
+          // assert
+          verifyZeroInteractions(newsRemoteDatasource);
+          verify(newsLocalDatasource.getLastNews());
+          expect(result, equals(Left(CacheFailure('Error'))));
+        }
+      );
+
+      test('Should return Cache failure when there is no cached data present for Country wise news',
+        ()async{
+          // arrange
+          when(newsLocalDatasource.getLastNews()).thenThrow(CacheException('Error'));
+          // act
+          final result = await newsRepoImpl.getCountryNews(tCountry,tCategory);
+          // assert
+          verifyZeroInteractions(newsRemoteDatasource);
+          verify(newsLocalDatasource.getLastNews());
+          expect(result, equals(Left(CacheFailure('Error'))));
+        }
+      );
     });
   });
 }

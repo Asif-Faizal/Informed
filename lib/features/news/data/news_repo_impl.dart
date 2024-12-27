@@ -31,8 +31,12 @@ class NewsRepoImpl implements NewsRepo {
         return Left(ServerFailure('Error'));
       }
     } else {
-      final localNews = await newsLocalDatasource.getLastNews();
+      try{
+        final localNews = await newsLocalDatasource.getLastNews();
       return Right(localNews);
+      }catch (e) {
+        return Left(CacheFailure('Error'));
+      }
     }
   }
 
@@ -47,8 +51,12 @@ class NewsRepoImpl implements NewsRepo {
         return Left(ServerFailure('Error'));
       }
     } else {
-      final localNews = await newsLocalDatasource.getLastNews();
+      try{
+        final localNews = await newsLocalDatasource.getLastNews();
       return Right(localNews);
+      }catch (e){
+        return Left(CacheFailure('Error'));
+      }
     }
   }
 }
