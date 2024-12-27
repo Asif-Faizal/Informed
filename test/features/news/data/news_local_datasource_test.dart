@@ -51,4 +51,31 @@ void main() {
       );
     });
   });
+
+  group('Cache the News', () {
+    setUp(() {
+      when(mockSharedPreferences.setString(any, any))
+          .thenAnswer((_) async => true);
+    });
+    final tNewsModel1 = NewsModel(
+      sourceId: null,
+      sourceName: 'Reuters',
+      author: 'Reuters',
+      title:
+          'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
+      description: null,
+      url:
+          'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
+      urlToImage: null,
+      publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
+      content: null,
+    );
+    test('should call shared preferences to Cache the data', () async {
+      datasource.cacheNews(tNewsModel1); // Call the method being tested.
+      final jsonString =
+          json.encode(tNewsModel1.toJson()); // Serialize the model to JSON.
+      verify(mockSharedPreferences.setString('CACHED_NEWS',
+          jsonString)); // Verify that the correct method was called with the expected arguments.
+    });
+  });
 }

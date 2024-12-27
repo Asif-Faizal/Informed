@@ -16,7 +16,10 @@ class NewsLocalDatasourceImpl implements NewsLocalDatasource {
   NewsLocalDatasourceImpl({required this.sharedPreferences});
   @override
   Future<void> cacheNews(NewsModel newsToCache) {
-    throw UnimplementedError();
+    return sharedPreferences.setString(
+      'CACHED_NEWS',
+      json.encode(newsToCache.toJson()), // Serialize NewsModel to JSON string.
+    );
   }
 
   @override
