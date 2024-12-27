@@ -50,7 +50,7 @@ void main() {
             .thenAnswer((_) async => Right(tNewsEntity));
 
         // Act: Calling the use case's call method with the test query.
-        final result = await getQueryNews.call(tQuery);
+        final result = await getQueryNews.call(GetQueryNewsParams(query: tQuery));
 
         // Assert: Verifying the result and the expected outcome.
         expect(result, Right(tNewsEntity)); // Should return the NewsEntity.
@@ -68,7 +68,7 @@ void main() {
             .thenAnswer((_) async => Left(ServerFailure('Error')));
 
         // Act: Calling the use case's call method with the test query.
-        final result = await getQueryNews.call(tQuery);
+        final result = await getQueryNews.call(GetQueryNewsParams(query: tQuery));
 
         // Assert: Verifying the result and the expected failure outcome.
         expect(result, Left(ServerFailure('Error'))); // Should return a ServerFailure.
@@ -87,7 +87,7 @@ void main() {
             .thenAnswer((_) async => Right(tNewsEntity));
 
         // Act: Calling the use case's call method with the test query.
-        final result = await getCountryNews.call(tCountry,tCategory);
+        final result = await getCountryNews.call(GetCountryNewsParams(country: tCountry, category: tCategory));
 
         // Assert: Verifying the result and the expected outcome.
         expect(result, Right(tNewsEntity)); // Should return the NewsEntity.
@@ -105,7 +105,7 @@ void main() {
             .thenAnswer((_) async => Left(ServerFailure('Error')));
 
         // Act: Calling the use case's call method with the test query.
-        final result = await getCountryNews.call(tCountry,tCategory);
+        final result = await getCountryNews.call(GetCountryNewsParams(country: tCountry, category: tCategory));
 
         // Assert: Verifying the result and the expected failure outcome.
         expect(result, Left(ServerFailure('Error'))); // Should return a ServerFailure.
