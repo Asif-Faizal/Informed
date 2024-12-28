@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:Informed/features/news/data/news_model.dart';
+import 'package:Informed/features/news/domain/news_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tdd_clean/features/news/data/news_model.dart';
-import 'package:tdd_clean/features/news/domain/news_entity.dart';
 
 import '../../../fixtures/fixture_reader.dart';
 

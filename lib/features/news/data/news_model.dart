@@ -1,4 +1,4 @@
-import 'package:tdd_clean/features/news/domain/news_entity.dart';
+import '../domain/news_entity.dart';
 
 class NewsModel extends NewsEntity {
   const NewsModel({

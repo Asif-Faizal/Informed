@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:tdd_clean/core/connection/network_info.dart';
-import 'package:tdd_clean/core/error/failures.dart';
-import 'package:tdd_clean/features/news/data/news_local_datasource.dart';
-import 'package:tdd_clean/features/news/data/news_remote_datasource.dart';
-import 'package:tdd_clean/features/news/domain/news_entity.dart';
+import '../../../core/connection/network_info.dart';
+import '../../../core/error/failures.dart';
+import '../domain/news_entity.dart';
 import '../domain/news_repo.dart';
+import 'news_local_datasource.dart';
+import 'news_remote_datasource.dart';
 
 class NewsRepoImpl implements NewsRepo {
   final NewsRemoteDatasource newsRemoteDatasource;
@@ -22,8 +22,6 @@ class NewsRepoImpl implements NewsRepo {
     if (await networkInfo.isConnected) {
       try {
         final remoteNews = await newsRemoteDatasource.getCountryNews(country, category);
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        print(remoteNews);
         newsLocalDatasource.cacheNews(remoteNews);
         return Right(remoteNews);
       } catch (e) {
@@ -44,8 +42,6 @@ class NewsRepoImpl implements NewsRepo {
     if (await networkInfo.isConnected) {
       try {
         final remoteNews = await newsRemoteDatasource.getQueryNews(query);
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        print(remoteNews);
         newsLocalDatasource.cacheNews(remoteNews);
         return Right(remoteNews);
       } catch (e) {

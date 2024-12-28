@@ -1,8 +1,8 @@
+import 'package:Informed/core/connection/network_info.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tdd_clean/core/connection/network_info.dart';
 import 'dart:async';
 
 // Generate mock class

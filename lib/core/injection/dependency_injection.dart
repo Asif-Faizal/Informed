@@ -1,14 +1,14 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tdd_clean/features/news/data/news_local_datasource.dart';
-import 'package:tdd_clean/features/news/data/news_remote_datasource.dart';
-import 'package:tdd_clean/features/news/data/news_repo_impl.dart';
-import 'package:tdd_clean/features/news/domain/news_repo.dart';
-import 'package:tdd_clean/features/news/bloc/news_bloc.dart';
-import 'package:tdd_clean/features/news/domain/get_query_news.dart';
-import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
+import '../../features/news/bloc/news_bloc.dart';
+import '../../features/news/data/news_local_datasource.dart';
+import '../../features/news/data/news_remote_datasource.dart';
+import '../../features/news/data/news_repo_impl.dart';
+import '../../features/news/domain/get_country_news.dart';
+import '../../features/news/domain/get_query_news.dart';
+import '../../features/news/domain/news_repo.dart';
 import '../connection/network_info.dart';
 
 final sl = GetIt.instance;

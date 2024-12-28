@@ -1,11 +1,11 @@
+import 'package:Informed/core/error/exceptions.dart';
+import 'package:Informed/features/news/data/news_model.dart';
+import 'package:Informed/features/news/data/news_remote_datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:tdd_clean/core/error/exceptions.dart';
-import 'package:tdd_clean/features/news/data/news_model.dart';
-import 'package:tdd_clean/features/news/data/news_remote_datasource.dart';
 
 import '../../../fixtures/fixture_reader.dart';
 import 'news_remote_datasource_test.mocks.dart';

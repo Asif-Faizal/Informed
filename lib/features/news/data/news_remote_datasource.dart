@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:tdd_clean/features/news/data/news_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/error/exceptions.dart';
+import 'news_model.dart';
 
 abstract class NewsRemoteDatasource {
   // calls API [https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=API_KEY]

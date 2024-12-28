@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tdd_clean/features/news/domain/get_query_news.dart';
-import 'package:tdd_clean/features/news/domain/get_country_news.dart';
-import 'package:tdd_clean/features/news/domain/news_entity.dart';
+
+import '../domain/get_country_news.dart';
+import '../domain/get_query_news.dart';
+import '../domain/news_entity.dart';
 
 part 'news_event.dart';
 part 'news_state.dart';

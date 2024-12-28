@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tdd_clean/core/usecase/usecase.dart';
-import 'package:tdd_clean/features/news/domain/news_repo.dart';
 
 import '../../../core/error/failures.dart';
+import '../../../core/usecase/usecase.dart';
 import 'news_entity.dart';
+import 'news_repo.dart';
 
 class GetQueryNews implements Usecase<List<NewsEntity>, GetQueryNewsParams> {
   final NewsRepo repository;

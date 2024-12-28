@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tdd_clean/features/news/bloc/news_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../bloc/news_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});

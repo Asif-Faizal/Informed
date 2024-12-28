@@ -1,12 +1,12 @@
+import 'package:Informed/features/news/bloc/news_bloc.dart';
+import 'package:Informed/features/news/domain/news_entity.dart';
+import 'package:Informed/features/news/presentation/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tdd_clean/features/news/bloc/news_bloc.dart';
-import 'package:tdd_clean/features/news/domain/news_entity.dart';
-import 'package:tdd_clean/features/news/presentation/screen/home_screen.dart';
 
 import 'home_screen_ui_test.mocks.dart';
 
@@ -17,7 +17,7 @@ void main() {
 
   setUp(() {
     mockNewsBloc = MockNewsBloc();
-    
+
     // Provide dummy values for abstract NewsState class
     provideDummy<NewsState>(NewsInitial());
   });
@@ -30,7 +30,8 @@ void main() {
     url: 'https://test.com',
     urlToImage: 'https://test.com/image.jpg',
     publishedAt: DateTime.now(),
-    content: 'Test Content', sourceId: '',
+    content: 'Test Content',
+    sourceId: '',
   );
 
   Widget createWidgetUnderTest() {
@@ -66,9 +67,10 @@ void main() {
         (WidgetTester tester) async {
       // arrange
       final List<NewsEntity> testArticles = [testArticle];
-      when(mockNewsBloc.stream)
-          .thenAnswer((_) => Stream.value(CountryNewsLoaded(news:  testArticles)));
-      when(mockNewsBloc.state).thenReturn(CountryNewsLoaded(news:  testArticles));
+      when(mockNewsBloc.stream).thenAnswer(
+          (_) => Stream.value(CountryNewsLoaded(news: testArticles)));
+      when(mockNewsBloc.state)
+          .thenReturn(CountryNewsLoaded(news: testArticles));
       when(mockNewsBloc.country).thenReturn('all');
 
       // act
@@ -85,9 +87,10 @@ void main() {
         (WidgetTester tester) async {
       // arrange
       const errorMessage = 'Something went wrong';
-      when(mockNewsBloc.stream)
-          .thenAnswer((_) => Stream.value(CountryNewsError(errorMessage:  errorMessage)));
-      when(mockNewsBloc.state).thenReturn(CountryNewsError(errorMessage:  errorMessage));
+      when(mockNewsBloc.stream).thenAnswer(
+          (_) => Stream.value(CountryNewsError(errorMessage: errorMessage)));
+      when(mockNewsBloc.state)
+          .thenReturn(CountryNewsError(errorMessage: errorMessage));
       when(mockNewsBloc.country).thenReturn('all');
 
       // act
@@ -101,8 +104,7 @@ void main() {
     testWidgets('should trigger search when search button is tapped',
         (WidgetTester tester) async {
       // arrange
-      when(mockNewsBloc.stream)
-          .thenAnswer((_) => Stream.value(NewsInitial()));
+      when(mockNewsBloc.stream).thenAnswer((_) => Stream.value(NewsInitial()));
       when(mockNewsBloc.state).thenReturn(NewsInitial());
       when(mockNewsBloc.country).thenReturn('all');
 
@@ -118,14 +120,14 @@ void main() {
       await tester.pump();
 
       // assert
-      verify(mockNewsBloc.add(GetQueryNewsEvent(query: 'test query'))).called(1);
+      verify(mockNewsBloc.add(GetQueryNewsEvent(query: 'test query')))
+          .called(1);
     });
 
     testWidgets('should trigger search when text is submitted',
         (WidgetTester tester) async {
       // arrange
-      when(mockNewsBloc.stream)
-          .thenAnswer((_) => Stream.value(NewsInitial()));
+      when(mockNewsBloc.stream).thenAnswer((_) => Stream.value(NewsInitial()));
       when(mockNewsBloc.state).thenReturn(NewsInitial());
       when(mockNewsBloc.country).thenReturn('all');
 
@@ -141,14 +143,14 @@ void main() {
       await tester.pump();
 
       // assert
-      verify(mockNewsBloc.add(GetQueryNewsEvent(query: 'test query'))).called(1);
+      verify(mockNewsBloc.add(GetQueryNewsEvent(query: 'test query')))
+          .called(1);
     });
 
     testWidgets('should trigger country-wise news when country is selected',
         (WidgetTester tester) async {
       // arrange
-      when(mockNewsBloc.stream)
-          .thenAnswer((_) => Stream.value(NewsInitial()));
+      when(mockNewsBloc.stream).thenAnswer((_) => Stream.value(NewsInitial()));
       when(mockNewsBloc.state).thenReturn(NewsInitial());
       when(mockNewsBloc.country).thenReturn('all');
 
@@ -163,7 +165,8 @@ void main() {
       await tester.pump();
 
       // assert
-      verify(mockNewsBloc.add(GetCountryWiseNewsEvent(country: 'us', category: '')))
+      verify(mockNewsBloc
+              .add(GetCountryWiseNewsEvent(country: 'us', category: '')))
           .called(1);
     });
   });

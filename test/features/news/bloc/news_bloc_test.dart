@@ -1,12 +1,12 @@
+import 'package:Informed/core/error/failures.dart';
+import 'package:Informed/features/news/bloc/news_bloc.dart';
+import 'package:Informed/features/news/data/news_model.dart';
+import 'package:Informed/features/news/domain/get_country_news.dart';
+import 'package:Informed/features/news/domain/get_query_news.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tdd_clean/core/error/failures.dart';
-import 'package:tdd_clean/features/news/bloc/news_bloc.dart';
-import 'package:tdd_clean/features/news/data/news_model.dart';
-import 'package:tdd_clean/features/news/domain/get_query_news.dart';
-import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 
 import 'news_bloc_test.mocks.dart';
 

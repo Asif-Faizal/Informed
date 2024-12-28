@@ -1,15 +1,16 @@
+import 'package:Informed/core/connection/network_info.dart';
+import 'package:Informed/core/error/exceptions.dart';
+import 'package:Informed/core/error/failures.dart';
+import 'package:Informed/features/news/data/news_local_datasource.dart';
+import 'package:Informed/features/news/data/news_model.dart';
+import 'package:Informed/features/news/data/news_remote_datasource.dart';
+import 'package:Informed/features/news/data/news_repo_impl.dart';
+import 'package:Informed/features/news/domain/news_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tdd_clean/core/connection/network_info.dart';
-import 'package:tdd_clean/core/error/exceptions.dart';
-import 'package:tdd_clean/core/error/failures.dart';
-import 'package:tdd_clean/features/news/data/news_local_datasource.dart';
-import 'package:tdd_clean/features/news/data/news_model.dart';
-import 'package:tdd_clean/features/news/data/news_remote_datasource.dart';
-import 'package:tdd_clean/features/news/data/news_repo_impl.dart';
-import 'package:tdd_clean/features/news/domain/news_entity.dart';
+
 import 'news_repo_impl_test.mocks.dart';
 
 @GenerateMocks([NewsRemoteDatasource])

@@ -1,12 +1,12 @@
 import 'dart:convert';
+import 'package:Informed/core/error/failures.dart';
+import 'package:Informed/features/news/data/news_local_datasource.dart';
+import 'package:Informed/features/news/data/news_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tdd_clean/core/error/failures.dart';
-import 'package:tdd_clean/features/news/data/news_local_datasource.dart';
-import 'package:tdd_clean/features/news/data/news_model.dart';
-import '../../../fixtures/fixture_reader.dart';  // Ensure this is correctly implemented
+import '../../../fixtures/fixture_reader.dart';
 import 'news_local_datasource_test.mocks.dart';
 
 @GenerateMocks([SharedPreferences])

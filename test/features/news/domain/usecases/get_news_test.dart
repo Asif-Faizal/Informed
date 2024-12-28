@@ -1,14 +1,15 @@
+import 'package:Informed/core/error/failures.dart';
+import 'package:Informed/features/news/domain/get_country_news.dart';
+import 'package:Informed/features/news/domain/get_query_news.dart';
+import 'package:Informed/features/news/domain/news_entity.dart';
+import 'package:Informed/features/news/domain/news_repo.dart';
 import 'package:mockito/annotations.dart';
-import 'package:tdd_clean/features/news/domain/get_query_news.dart';
-import 'package:tdd_clean/features/news/domain/get_country_news.dart';
-import 'package:tdd_clean/features/news/domain/news_entity.dart';
-import 'package:tdd_clean/features/news/domain/news_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dartz/dartz.dart';
-import 'package:tdd_clean/core/error/failures.dart';
 
 import 'get_news_test.mocks.dart';
+
 
 @GenerateMocks([NewsRepo]) // Annotating to generate mocks for the NewsRepo class.
 void main() {
