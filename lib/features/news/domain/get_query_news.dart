@@ -1,27 +1,28 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tdd_clean/core/usecase/usecase.dart';
 import 'package:tdd_clean/features/news/domain/news_repo.dart';
 
 import '../../../core/error/failures.dart';
+import '../../../core/usecase/usecase.dart';
 import 'news_entity.dart';
 
-class GetQueryNews implements Usecase<NewsEntity, GetQueryNewsParams> {
+class GetCountryNews implements Usecase<List<NewsEntity>, GetCountryNewsParams> {
   final NewsRepo repository;
 
-  GetQueryNews(this.repository);
+  GetCountryNews(this.repository);
 
   @override
-  Future<Either<Failure, NewsEntity>> call(GetQueryNewsParams params) {
-    return repository.getQueryNews(params.query);
+  Future<Either<Failure, List<NewsEntity>>> call(GetCountryNewsParams params) {
+    return repository.getCountryNews(params.country, params.category);
   }
 }
 
-class GetQueryNewsParams extends Equatable {
-  final String query;
+class GetCountryNewsParams extends Equatable {
+  final String country;
+  final String category;
 
-  GetQueryNewsParams({required this.query});
+  GetCountryNewsParams({required this.country, required this.category});
 
   @override
-  List<Object?> get props => [query];
+  List<Object?> get props => [country, category];
 }

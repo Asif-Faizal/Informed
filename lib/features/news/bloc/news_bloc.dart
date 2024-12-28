@@ -24,18 +24,21 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     
     result.fold(
       (failure) => emit(QueryNewsError(errorMessage: 'Error')), // Emit error if failure
-      (newsEntity) => emit(QueryNewsLoaded(news: newsEntity)), // Emit loaded state if successful
+      (newsList) => emit(QueryNewsLoaded(news: newsList)), // Emit loaded state with list if successful
     );
   }
 
-    Future<void> _onGetCountryWiseNewsEvent(GetCountryWiseNewsEvent event, Emitter<NewsState> emit) async {
+  // Event handler for GetCountryWiseNewsEvent
+  Future<void> _onGetCountryWiseNewsEvent(GetCountryWiseNewsEvent event, Emitter<NewsState> emit) async {
     emit(CountryNewsLoading()); // Emit loading state first
     
-    final result = await getCountryNews(GetCountryNewsParams(country: event.country,category: event.category)); // Call the use case
+    final result = await getCountryNews(
+      GetCountryNewsParams(country: event.country, category: event.category),
+    ); // Call the use case
     
     result.fold(
       (failure) => emit(CountryNewsError(errorMessage: 'Error')), // Emit error if failure
-      (newsEntity) => emit(CountryNewsLoaded(news: newsEntity)), // Emit loaded state if successful
+      (newsList) => emit(CountryNewsLoaded(news: newsList)), // Emit loaded state with list if successful
     );
   }
 }

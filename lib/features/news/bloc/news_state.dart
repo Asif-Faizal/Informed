@@ -12,7 +12,7 @@ final class NewsInitial extends NewsState {}
 final class QueryNewsLoading extends NewsState {}
 
 final class QueryNewsLoaded extends NewsState {
-  final NewsEntity news;
+  final List<NewsEntity> news;
 
   QueryNewsLoaded({required this.news});
 
@@ -32,7 +32,7 @@ final class QueryNewsError extends NewsState {
 final class CountryNewsLoading extends NewsState {}
 
 final class CountryNewsLoaded extends NewsState {
-    final NewsEntity news;
+  final List<NewsEntity> news;
 
   CountryNewsLoaded({required this.news});
 

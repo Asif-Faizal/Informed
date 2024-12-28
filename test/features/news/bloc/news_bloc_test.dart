@@ -29,24 +29,38 @@ void main() {
 
   group('GetQueryNewsEvent', () {
     final tQuery = 'query';
-    final tNewsModel = NewsModel(
-      sourceId: '28734685',
-      sourceName: 'Reuters',
-      author: 'Reuters',
-      title:
-          'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
-      description: 'Passenger plane crashed',
-      url:
-          'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
-      urlToImage: 'http://example.com',
-      publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
-      content:
-          'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
-    );
+    final tNewsModelList = [
+      NewsModel(
+        sourceId: null,
+        sourceName: 'Reuters',
+        author: 'Reuters',
+        title:
+            'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
+        description: null,
+        url:
+            'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
+        urlToImage: null,
+        publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
+        content: null,
+      ),
+      NewsModel(
+        sourceId: null,
+        sourceName: 'Reuters',
+        author: 'Reuters',
+        title:
+            'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
+        description: null,
+        url:
+            'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
+        urlToImage: null,
+        publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
+        content: null,
+      ),
+    ];
     test('should emit [QueryNewsLoading, QueryNewsLoaded] when data is gotten successfully', () async {
       // Arrange
       when(mockQueryNews(any)).thenAnswer(
-        (_) async => Right(tNewsModel),
+        (_) async => Right(tNewsModelList),
       );
 
       // Act
@@ -57,7 +71,7 @@ void main() {
         bloc.stream,
         emitsInOrder([
           QueryNewsLoading(),
-          QueryNewsLoaded(news: tNewsModel),
+          QueryNewsLoaded(news: tNewsModelList),
         ]),
       );
     });
@@ -86,24 +100,38 @@ void main() {
   group('GetCountryWiseNewsEvent', () {
     final tCountry = 'country';
     final tCategory = 'category';
-    final tNewsModel = NewsModel(
-      sourceId: '28734685',
-      sourceName: 'Reuters',
-      author: 'Reuters',
-      title:
-          'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
-      description: 'Passenger plane crashed',
-      url:
-          'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
-      urlToImage: 'http://example.com',
-      publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
-      content:
-          'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
-    );
+    final tNewsModelList = [
+      NewsModel(
+        sourceId: null,
+        sourceName: 'Reuters',
+        author: 'Reuters',
+        title:
+            'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
+        description: null,
+        url:
+            'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
+        urlToImage: null,
+        publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
+        content: null,
+      ),
+      NewsModel(
+        sourceId: null,
+        sourceName: 'Reuters',
+        author: 'Reuters',
+        title:
+            'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
+        description: null,
+        url:
+            'https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/',
+        urlToImage: null,
+        publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
+        content: null,
+      ),
+    ];
     test('should emit [QueryNewsLoading, QueryNewsLoaded] when data is gotten successfully', () async {
       // Arrange
       when(mockCountryNews(any)).thenAnswer(
-        (_) async => Right(tNewsModel),
+        (_) async => Right(tNewsModelList),
       );
 
       // Act
@@ -114,7 +142,7 @@ void main() {
         bloc.stream,
         emitsInOrder([
           CountryNewsLoading(),
-          CountryNewsLoaded(news: tNewsModel),
+          CountryNewsLoaded(news: tNewsModelList),
         ]),
       );
     });

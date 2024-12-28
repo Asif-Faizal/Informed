@@ -3,14 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:tdd_clean/core/connection/network_info.dart' as _i6;
 import 'package:tdd_clean/features/news/data/news_local_datasource.dart' as _i5;
-import 'package:tdd_clean/features/news/data/news_model.dart' as _i2;
+import 'package:tdd_clean/features/news/data/news_model.dart' as _i4;
 import 'package:tdd_clean/features/news/data/news_remote_datasource.dart'
-    as _i3;
+    as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -26,42 +26,37 @@ import 'package:tdd_clean/features/news/data/news_remote_datasource.dart'
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeNewsModel_0 extends _i1.SmartFake implements _i2.NewsModel {
-  _FakeNewsModel_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [NewsRemoteDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNewsRemoteDatasource extends _i1.Mock
-    implements _i3.NewsRemoteDatasource {
+    implements _i2.NewsRemoteDatasource {
   MockNewsRemoteDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.NewsModel> getQueryNews(String? query) =>
+  _i3.Future<List<_i4.NewsModel>> getQueryNews(String? query) =>
       (super.noSuchMethod(
             Invocation.method(#getQueryNews, [query]),
-            returnValue: _i4.Future<_i2.NewsModel>.value(
-              _FakeNewsModel_0(this, Invocation.method(#getQueryNews, [query])),
+            returnValue: _i3.Future<List<_i4.NewsModel>>.value(
+              <_i4.NewsModel>[],
             ),
           )
-          as _i4.Future<_i2.NewsModel>);
+          as _i3.Future<List<_i4.NewsModel>>);
 
   @override
-  _i4.Future<_i2.NewsModel> getCountryNews(String? country, String? category) =>
+  _i3.Future<List<_i4.NewsModel>> getCountryNews(
+    String? country,
+    String? category,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#getCountryNews, [country, category]),
-            returnValue: _i4.Future<_i2.NewsModel>.value(
-              _FakeNewsModel_0(
-                this,
-                Invocation.method(#getCountryNews, [country, category]),
-              ),
+            returnValue: _i3.Future<List<_i4.NewsModel>>.value(
+              <_i4.NewsModel>[],
             ),
           )
-          as _i4.Future<_i2.NewsModel>);
+          as _i3.Future<List<_i4.NewsModel>>);
 }
 
 /// A class which mocks [NewsLocalDatasource].
@@ -74,23 +69,23 @@ class MockNewsLocalDatasource extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.NewsModel> getLastNews() =>
+  _i3.Future<List<_i4.NewsModel>> getLastNews() =>
       (super.noSuchMethod(
             Invocation.method(#getLastNews, []),
-            returnValue: _i4.Future<_i2.NewsModel>.value(
-              _FakeNewsModel_0(this, Invocation.method(#getLastNews, [])),
+            returnValue: _i3.Future<List<_i4.NewsModel>>.value(
+              <_i4.NewsModel>[],
             ),
           )
-          as _i4.Future<_i2.NewsModel>);
+          as _i3.Future<List<_i4.NewsModel>>);
 
   @override
-  _i4.Future<void> cacheNews(_i2.NewsModel? newsToCache) =>
+  _i3.Future<void> cacheNews(List<_i4.NewsModel>? newsToCache) =>
       (super.noSuchMethod(
             Invocation.method(#cacheNews, [newsToCache]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i3.Future<void>);
 }
 
 /// A class which mocks [NetworkInfo].
@@ -102,10 +97,10 @@ class MockNetworkInfo extends _i1.Mock implements _i6.NetworkInfo {
   }
 
   @override
-  _i4.Future<bool> get isConnected =>
+  _i3.Future<bool> get isConnected =>
       (super.noSuchMethod(
             Invocation.getter(#isConnected),
-            returnValue: _i4.Future<bool>.value(false),
+            returnValue: _i3.Future<bool>.value(false),
           )
-          as _i4.Future<bool>);
+          as _i3.Future<bool>);
 }

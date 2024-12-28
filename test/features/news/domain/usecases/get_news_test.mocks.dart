@@ -39,35 +39,35 @@ class MockNewsRepo extends _i1.Mock implements _i3.NewsRepo {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i6.NewsEntity>> getQueryNews(
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.NewsEntity>>> getQueryNews(
     String? query,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getQueryNews, [query]),
             returnValue:
-                _i4.Future<_i2.Either<_i5.Failure, _i6.NewsEntity>>.value(
-                  _FakeEither_0<_i5.Failure, _i6.NewsEntity>(
+                _i4.Future<_i2.Either<_i5.Failure, List<_i6.NewsEntity>>>.value(
+                  _FakeEither_0<_i5.Failure, List<_i6.NewsEntity>>(
                     this,
                     Invocation.method(#getQueryNews, [query]),
                   ),
                 ),
           )
-          as _i4.Future<_i2.Either<_i5.Failure, _i6.NewsEntity>>);
+          as _i4.Future<_i2.Either<_i5.Failure, List<_i6.NewsEntity>>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i6.NewsEntity>> getCountryNews(
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.NewsEntity>>> getCountryNews(
     String? country,
     String? category,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getCountryNews, [country, category]),
             returnValue:
-                _i4.Future<_i2.Either<_i5.Failure, _i6.NewsEntity>>.value(
-                  _FakeEither_0<_i5.Failure, _i6.NewsEntity>(
+                _i4.Future<_i2.Either<_i5.Failure, List<_i6.NewsEntity>>>.value(
+                  _FakeEither_0<_i5.Failure, List<_i6.NewsEntity>>(
                     this,
                     Invocation.method(#getCountryNews, [country, category]),
                   ),
                 ),
           )
-          as _i4.Future<_i2.Either<_i5.Failure, _i6.NewsEntity>>);
+          as _i4.Future<_i2.Either<_i5.Failure, List<_i6.NewsEntity>>>);
 }

@@ -23,18 +23,31 @@ void main() {
     getCountryNews = GetCountryNews(mockNewsRepo); // Initializing the use case with the mocked repository.
   });
 
-  // Example news entity that will be used in the test.
-  final tNewsEntity = NewsEntity(
-    sourceId: '1',
-    sourceName: 'Test Source',
-    author: 'Test Author',
-    title: 'Test Title',
-    description: 'Test Description',
-    url: 'https://example.com',
-    urlToImage: 'https://example.com/image.jpg',
-    publishedAt: DateTime.now(),
-    content: 'Test Content',
-  );
+  // Example news entity list that will be used in the test.
+  final tNewsEntityList = [
+    NewsEntity(
+      sourceId: '1',
+      sourceName: 'Test Source',
+      author: 'Test Author',
+      title: 'Test Title 1',
+      description: 'Test Description 1',
+      url: 'https://example.com',
+      urlToImage: 'https://example.com/image1.jpg',
+      publishedAt: DateTime.now(),
+      content: 'Test Content 1',
+    ),
+    NewsEntity(
+      sourceId: '2',
+      sourceName: 'Test Source 2',
+      author: 'Test Author 2',
+      title: 'Test Title 2',
+      description: 'Test Description 2',
+      url: 'https://example.com',
+      urlToImage: 'https://example.com/image2.jpg',
+      publishedAt: DateTime.now(),
+      content: 'Test Content 2',
+    ),
+  ];
 
   const tQuery = 'test query'; // A test query to search news with.
   const tCountry = 'test Country'; // A test country to search news with.
@@ -43,17 +56,17 @@ void main() {
   group('getQueryNews', () {
     // Test case when the repository call is successful.
     test(
-      'should return NewsEntity when the repository call is successful',
+      'should return a list of NewsEntities when the repository call is successful',
       () async {
         // Arranging the mock to return a successful response (Right).
         when(mockNewsRepo.getQueryNews(tQuery))
-            .thenAnswer((_) async => Right(tNewsEntity));
+            .thenAnswer((_) async => Right(tNewsEntityList));
 
         // Act: Calling the use case's call method with the test query.
         final result = await getQueryNews.call(GetQueryNewsParams(query: tQuery));
 
         // Assert: Verifying the result and the expected outcome.
-        expect(result, Right(tNewsEntity)); // Should return the NewsEntity.
+        expect(result, Right(tNewsEntityList)); // Should return the list of NewsEntities.
         verify(mockNewsRepo.getQueryNews(tQuery)); // Verifying that the repository's method was called with the correct query.
         verifyNoMoreInteractions(mockNewsRepo); // Verifying that no other interactions occurred with the mock.
       },
@@ -77,21 +90,22 @@ void main() {
       },
     );
   });
+
   group('getCountryNews', () {
     // Test case when the repository call is successful.
     test(
-      'should return NewsEntity when the repository call is successful',
+      'should return a list of NewsEntities when the repository call is successful',
       () async {
         // Arranging the mock to return a successful response (Right).
-        when(mockNewsRepo.getCountryNews(tCountry,tCategory))
-            .thenAnswer((_) async => Right(tNewsEntity));
+        when(mockNewsRepo.getCountryNews(tCountry, tCategory))
+            .thenAnswer((_) async => Right(tNewsEntityList));
 
         // Act: Calling the use case's call method with the test query.
         final result = await getCountryNews.call(GetCountryNewsParams(country: tCountry, category: tCategory));
 
         // Assert: Verifying the result and the expected outcome.
-        expect(result, Right(tNewsEntity)); // Should return the NewsEntity.
-        verify(mockNewsRepo.getCountryNews(tCountry,tCategory)); // Verifying that the repository's method was called with the correct query.
+        expect(result, Right(tNewsEntityList)); // Should return the list of NewsEntities.
+        verify(mockNewsRepo.getCountryNews(tCountry, tCategory)); // Verifying that the repository's method was called with the correct query.
         verifyNoMoreInteractions(mockNewsRepo); // Verifying that no other interactions occurred with the mock.
       },
     );
@@ -101,7 +115,7 @@ void main() {
       'should return ServerFailure when the repository call is unsuccessful',
       () async {
         // Arranging the mock to return a failure (Left).
-        when(mockNewsRepo.getCountryNews(tCountry,tCategory))
+        when(mockNewsRepo.getCountryNews(tCountry, tCategory))
             .thenAnswer((_) async => Left(ServerFailure('Error')));
 
         // Act: Calling the use case's call method with the test query.
@@ -109,7 +123,7 @@ void main() {
 
         // Assert: Verifying the result and the expected failure outcome.
         expect(result, Left(ServerFailure('Error'))); // Should return a ServerFailure.
-        verify(mockNewsRepo.getCountryNews(tCountry,tCategory)); // Verifying that the repository's method was called with the correct query.
+        verify(mockNewsRepo.getCountryNews(tCountry, tCategory)); // Verifying that the repository's method was called with the correct query.
         verifyNoMoreInteractions(mockNewsRepo); // Verifying that no other interactions occurred with the mock.
       },
     );

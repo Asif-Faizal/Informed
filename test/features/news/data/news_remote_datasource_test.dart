@@ -20,9 +20,10 @@ void main() {
     datasource = NewsRemoteDatasourceImpl(client: mockClient);
   });
 
-  group('Get Query news', () {
-    final tQuery = 'query';
-    final tNewsModel2 = NewsModel(
+  group('Get Query News', () {
+  final tQuery = 'query';
+  final tNewsModelList = [
+    NewsModel(
       sourceId: '28734685',
       sourceName: 'Reuters',
       author: 'Reuters',
@@ -35,55 +36,62 @@ void main() {
       publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
       content:
           'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
-    );
-    test('should perform GET request on a URL with query', () async {
-      // arrange
-      when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('news_non_null.json'), 200));
-      // act
-      datasource.getQueryNews(tQuery);
-      // assert
-      verify(mockClient.get(
-          Uri.parse(
-            "https://newsapi.org/v2/everything?q=$tQuery&sortBy=publishedAt&apiKey=d26344a4cc7045a895af69f018609a64",
-          ),
-          headers: {
-            'Content-Type': 'application/json',
-          }));
-    });
+    ),
+  ];
 
-    test('should return News Entity when status code is 200', () async {
-      // arrange
-      when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('news_non_null.json'), 200));
-      // act
-      final result = await datasource.getQueryNews(tQuery);
-      // assert
-      expect(result, tNewsModel2);
-    });
+  test('should perform GET request on a URL with query', () async {
+    // arrange
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response(fixture('news_non_null.json'), 200));
 
-    test('should return Server Exception when status code is not 200',
-        () async {
-      // arrange
-      when(mockClient.get(any, headers: anyNamed('headers')))
-          .thenAnswer((_) async => http.Response('Something went wrong', 404));
+    // act
+    await datasource.getQueryNews(tQuery);
 
-      // act
-      final call = datasource.getQueryNews(tQuery);
-
-      // assert
-      expect(
-          () => call,
-          throwsA(isA<ServerException>()
-              .having((e) => e.message, 'message', 'Error')));
-    });
-    ;
+    // assert
+    verify(mockClient.get(
+      Uri.parse(
+        "https://newsapi.org/v2/everything?q=$tQuery&sortBy=publishedAt&apiKey=d26344a4cc7045a895af69f018609a64",
+      ),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ));
   });
 
-  group('Get Country wise news', () {
-    final tCountry = 'country';
-    final tCategory = 'category';
-    final tNewsModel2 = NewsModel(
+  test('should return a list of News Models when status code is 200', () async {
+    // arrange
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response(fixture('news_non_null.json'), 200));
+
+    // act
+    final result = await datasource.getQueryNews(tQuery);
+
+    // assert
+    expect(result, equals(tNewsModelList));
+  });
+
+  test('should throw ServerException when status code is not 200', () async {
+    // arrange
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response('Something went wrong', 404));
+
+    // act
+    final call = datasource.getQueryNews;
+
+    // assert
+    expect(
+      () => call(tQuery),
+      throwsA(isA<ServerException>().having((e) => e.message, 'message', 'Error')),
+    );
+  });
+});
+
+
+  group('Get Country News', () {
+  final tCountry = 'country';
+  final tCategory = 'category';
+  final tNewsModelList = [
+    NewsModel(
       sourceId: '28734685',
       sourceName: 'Reuters',
       author: 'Reuters',
@@ -96,48 +104,53 @@ void main() {
       publishedAt: DateTime.parse('2024-12-25T08:19:37Z'),
       content:
           'Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters',
-    );
-    test('should perform GET request on a URL with query', () async {
-      // arrange
-      when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('news_non_null.json'), 200));
-      // act
-      datasource.getCountryNews(tCountry,tCategory);
-      // assert
-      verify(mockClient.get(
-          Uri.parse(
-            "https://newsapi.org/v2/top-headlines?country=$tCountry&category=$tCategory&apiKey=d26344a4cc7045a895af69f018609a64",
-          ),
-          headers: {
-            'Content-Type': 'application/json',
-          }));
-    });
+    ),
+  ];
 
-    test('should return News Entity when status code is 200', () async {
-      // arrange
-      when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('news_non_null.json'), 200));
-      // act
-      final result = await datasource.getCountryNews(tCountry,tCategory);
-      // assert
-      expect(result, tNewsModel2);
-    });
+  test('should perform GET request on a URL with query', () async {
+    // arrange
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response(fixture('news_non_null.json'), 200));
 
-    test('should return Server Exception when status code is not 200',
-        () async {
-      // arrange
-      when(mockClient.get(any, headers: anyNamed('headers')))
-          .thenAnswer((_) async => http.Response('Something went wrong', 404));
+    // act
+    await datasource.getCountryNews(tCountry,tCategory);
 
-      // act
-      final call = datasource.getCountryNews(tCountry,tCategory);
-
-      // assert
-      expect(
-          () => call,
-          throwsA(isA<ServerException>()
-              .having((e) => e.message, 'message', 'Error')));
-    });
-    ;
+    // assert
+    verify(mockClient.get(
+      Uri.parse(
+        "https://newsapi.org/v2/top-headlines?country=$tCountry&category=$tCategory&apiKey=d26344a4cc7045a895af69f018609a64",
+      ),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ));
   });
+
+  test('should return a list of News Models when status code is 200', () async {
+    // arrange
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response(fixture('news_non_null.json'), 200));
+
+    // act
+    final result = await datasource.getCountryNews(tCountry,tCategory);
+
+    // assert
+    expect(result, equals(tNewsModelList));
+  });
+
+  test('should throw ServerException when status code is not 200', () async {
+    // arrange
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response('Something went wrong', 404));
+
+    // act
+    final call = datasource.getCountryNews;
+
+    // assert
+    expect(
+      () => call(tCountry,tCategory),
+      throwsA(isA<ServerException>().having((e) => e.message, 'message', 'Error')),
+    );
+  });
+});
 }

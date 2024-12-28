@@ -48,8 +48,28 @@ class NewsModel extends NewsEntity {
       'description': description,
       'url': url,
       'urlToImage': urlToImage,
-      'publishedAt': publishedAt.toUtc().toIso8601String().replaceAll('.000Z', 'Z'),
+      'publishedAt':
+          publishedAt.toUtc().toIso8601String().replaceAll('.000Z', 'Z'),
       'content': content,
     };
+  }
+  static List<NewsModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => NewsModel.fromJson(json)).toList();
+  }
+}
+
+class NewsResponseModel {
+  final List<NewsModel> articles;
+
+  NewsResponseModel({required this.articles});
+
+  factory NewsResponseModel.fromJson(Map<String, dynamic> json) {
+    // Safeguard against null and invalid types
+    final articlesJson = json['articles'] as List<dynamic>? ?? [];
+    final articles = articlesJson
+        .map((article) => NewsModel.fromJson(article as Map<String, dynamic>))
+        .toList();
+
+    return NewsResponseModel(articles: articles);
   }
 }

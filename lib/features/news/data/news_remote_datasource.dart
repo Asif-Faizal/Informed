@@ -7,9 +7,9 @@ import '../../../core/error/exceptions.dart';
 
 abstract class NewsRemoteDatasource {
   // calls API [https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=API_KEY]
-  Future<NewsModel> getQueryNews(String query);
+  Future<List<NewsModel>> getQueryNews(String query);
   // calls API [https://newsapi.org/v2/everything?q=apple&sortBy=publishedAt&apiKey=API_KEY]
-  Future<NewsModel> getCountryNews(String country, String category);
+  Future<List<NewsModel>> getCountryNews(String country, String category);
 }
 
 class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
@@ -18,7 +18,8 @@ class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
   NewsRemoteDatasourceImpl({required this.client});
 
   @override
-  Future<NewsModel> getCountryNews(String country, String category) async{
+  Future<List<NewsModel>> getCountryNews(
+      String country, String category) async {
     final response = await client.get(
       Uri.parse(
         "https://newsapi.org/v2/top-headlines?country=$country&category=$category&apiKey=d26344a4cc7045a895af69f018609a64",
@@ -29,14 +30,18 @@ class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
     );
 
     if (response.statusCode == 200) {
-      return NewsModel.fromJson(json.decode(response.body));
+      final responseBody = json.decode(response.body) as Map<String, dynamic>;
+      final articles = (responseBody['articles'] as List)
+          .map((article) => NewsModel.fromJson(article))
+          .toList();
+      return articles;
     } else {
-    throw ServerException('Error');
-  }
+      throw ServerException('Error');
+    }
   }
 
   @override
-  Future<NewsModel> getQueryNews(String query) async {
+  Future<List<NewsModel>> getQueryNews(String query) async {
     final response = await client.get(
       Uri.parse(
         "https://newsapi.org/v2/everything?q=$query&sortBy=publishedAt&apiKey=d26344a4cc7045a895af69f018609a64",
@@ -47,9 +52,11 @@ class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
     );
 
     if (response.statusCode == 200) {
-      return NewsModel.fromJson(json.decode(response.body));
+      final newsResponse =
+          NewsResponseModel.fromJson(json.decode(response.body));
+      return newsResponse.articles;
     } else {
-    throw ServerException('Error');
-  }
+      throw ServerException('Error');
+    }
   }
 }

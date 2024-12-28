@@ -1,13 +1,20 @@
 {
-    "source": {
-        "id": "28734685",
-        "name": "Reuters"
-    },
-    "author": "Reuters",
-    "title": "Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters",
-    "description": "Passenger plane crashed",
-    "url": "https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/",
-    "urlToImage": "http://example.com",
-    "publishedAt": "2024-12-25T08:19:37Z",
-    "content": "Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters"
-}
+    "status": "ok",
+    "totalResults": 1,
+    "articles": [
+      {
+        "source": {
+          "id": "28734685",
+          "name": "Reuters"
+        },
+        "author": "Reuters",
+        "title": "Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters",
+        "description": "Passenger plane crashed",
+        "url": "https://www.reuters.com/world/asia-pacific/passenger-plane-crashes-kazakhstan-emergencies-ministry-says-2024-12-25/",
+        "urlToImage": "http://example.com",
+        "publishedAt": "2024-12-25T08:19:37Z",
+        "content": "Passenger plane flying from Azerbaijan to Russia crashes in Kazakhstan with many feared dead - Reuters"
+      }
+    ]
+  }
+  
