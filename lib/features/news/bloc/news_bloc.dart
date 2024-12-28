@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 import 'package:tdd_clean/features/news/domain/get_query_news.dart';
+import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 import 'package:tdd_clean/features/news/domain/news_entity.dart';
 
 part 'news_event.dart';
@@ -11,34 +11,65 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final GetQueryNews getQueryNews;
   final GetCountryNews getCountryNews;
 
-  NewsBloc(this.getQueryNews, this.getCountryNews) : super(NewsInitial()) {
-    on<GetQueryNewsEvent>(_onGetQueryNewsEvent);
-    on<GetCountryWiseNewsEvent>(_onGetCountryWiseNewsEvent);
-  }
+  NewsBloc({
+    required this.getQueryNews, 
+    required this.getCountryNews
+  }) : super(NewsInitial()) {
+    on<GetQueryNewsEvent>((event, emit) async {
+      try {
+        // First emit loading state
+        emit(QueryNewsLoading());
+        print('Emitted QueryNewsLoading state');
 
-  // Event handler for GetQueryNewsEvent
-  Future<void> _onGetQueryNewsEvent(GetQueryNewsEvent event, Emitter<NewsState> emit) async {
-    emit(QueryNewsLoading()); // Emit loading state first
-    
-    final result = await getQueryNews(GetQueryNewsParams(query: event.query)); // Call the use case
-    
-    result.fold(
-      (failure) => emit(QueryNewsError(errorMessage: 'Error')), // Emit error if failure
-      (newsList) => emit(QueryNewsLoaded(news: newsList)), // Emit loaded state with list if successful
-    );
-  }
+        // Get the result
+        final result = await getQueryNews(GetQueryNewsParams(query: event.query));
+        
+        // Handle the result
+        result.fold(
+          (failure) {
+            emit(QueryNewsError(errorMessage: failure.toString()));
+            print('Emitted QueryNewsError state');
+          },
+          (newsList) {
+            emit(QueryNewsLoaded(news: newsList));
+            print('Emitted QueryNewsLoaded state with ${newsList.length} items');
+          },
+        );
+      } catch (e) {
+        emit(QueryNewsError(errorMessage: e.toString()));
+        print('Emitted QueryNewsError state due to exception: $e');
+      }
+    });
 
-  // Event handler for GetCountryWiseNewsEvent
-  Future<void> _onGetCountryWiseNewsEvent(GetCountryWiseNewsEvent event, Emitter<NewsState> emit) async {
-    emit(CountryNewsLoading()); // Emit loading state first
-    
-    final result = await getCountryNews(
-      GetCountryNewsParams(country: event.country, category: event.category),
-    ); // Call the use case
-    
-    result.fold(
-      (failure) => emit(CountryNewsError(errorMessage: 'Error')), // Emit error if failure
-      (newsList) => emit(CountryNewsLoaded(news: newsList)), // Emit loaded state with list if successful
-    );
+    on<GetCountryWiseNewsEvent>((event, emit) async {
+      try {
+        // First emit loading state
+        emit(CountryNewsLoading());
+        print('Emitted CountryNewsLoading state');
+
+        // Get the result
+        final result = await getCountryNews(
+          GetCountryNewsParams(
+            country: event.country,
+            category: event.category,
+          ),
+        );
+        
+        // Handle the result
+        result.fold(
+          (failure) {
+            emit(CountryNewsError(errorMessage: failure.toString()));
+            print('Emitted CountryNewsError state');
+          },
+          (newsList) {
+            emit(CountryNewsLoaded(news: newsList));
+            print('Emitted CountryNewsLoaded state with ${newsList.length} items');
+          },
+        );
+      } catch (e) {
+        emit(CountryNewsError(errorMessage: e.toString()));
+        print('Emitted CountryNewsError state due to exception: $e');
+      }
+    });
   }
 }

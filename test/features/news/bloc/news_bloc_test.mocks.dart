@@ -8,8 +8,8 @@ import 'dart:async' as _i5;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:tdd_clean/core/error/failures.dart' as _i6;
-import 'package:tdd_clean/features/news/domain/get_country_news.dart' as _i4;
-import 'package:tdd_clean/features/news/domain/get_query_news.dart' as _i8;
+import 'package:tdd_clean/features/news/domain/get_query_news.dart' as _i4;
+import 'package:tdd_clean/features/news/domain/get_country_news.dart' as _i8;
 import 'package:tdd_clean/features/news/domain/news_entity.dart' as _i7;
 import 'package:tdd_clean/features/news/domain/news_repo.dart' as _i2;
 

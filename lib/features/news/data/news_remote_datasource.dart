@@ -50,7 +50,7 @@ class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
         'Content-Type': 'application/json',
       },
     );
-
+    print(response.body);
     if (response.statusCode == 200) {
       final newsResponse =
           NewsResponseModel.fromJson(json.decode(response.body));

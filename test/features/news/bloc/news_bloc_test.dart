@@ -5,8 +5,8 @@ import 'package:mockito/mockito.dart';
 import 'package:tdd_clean/core/error/failures.dart';
 import 'package:tdd_clean/features/news/bloc/news_bloc.dart';
 import 'package:tdd_clean/features/news/data/news_model.dart';
-import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 import 'package:tdd_clean/features/news/domain/get_query_news.dart';
+import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 
 import 'news_bloc_test.mocks.dart';
 
@@ -20,7 +20,7 @@ void main() {
   setUp(() {
     mockCountryNews = MockGetCountryNews();
     mockQueryNews = MockGetQueryNews();
-    bloc = NewsBloc(mockQueryNews, mockCountryNews);
+    bloc = NewsBloc(getQueryNews:  mockQueryNews,getCountryNews:  mockCountryNews);
   });
 
   test('Initial State should be empty', () async {

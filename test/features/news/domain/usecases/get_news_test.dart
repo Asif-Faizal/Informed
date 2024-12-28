@@ -1,6 +1,6 @@
 import 'package:mockito/annotations.dart';
-import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 import 'package:tdd_clean/features/news/domain/get_query_news.dart';
+import 'package:tdd_clean/features/news/domain/get_country_news.dart';
 import 'package:tdd_clean/features/news/domain/news_entity.dart';
 import 'package:tdd_clean/features/news/domain/news_repo.dart';
 import 'package:flutter_test/flutter_test.dart';

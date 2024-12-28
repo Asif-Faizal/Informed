@@ -22,6 +22,8 @@ class NewsLocalDatasourceImpl implements NewsLocalDatasource {
     // Convert the list of NewsModel to a JSON-encoded string
     final List<Map<String, dynamic>> jsonList =
         newsToCache.map((news) => news.toJson()).toList();
+        print('#################################################');
+        print(jsonList);
     await sharedPreferences.setString(
       CACHED_NEWS_KEY,
       json.encode(jsonList),
@@ -38,6 +40,8 @@ class NewsLocalDatasourceImpl implements NewsLocalDatasource {
         final List<NewsModel> newsList = jsonList
             .map((jsonItem) => NewsModel.fromJson(jsonItem as Map<String, dynamic>))
             .toList();
+        print('#################################################');
+        print(newsList);
         return Future.value(newsList);
       } catch (e) {
         throw CacheFailure('Error parsing cached news');
