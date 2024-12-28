@@ -10,20 +10,22 @@ part 'news_state.dart';
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final GetQueryNews getQueryNews;
   final GetCountryNews getCountryNews;
+  String country = 'all';
 
-  NewsBloc({
-    required this.getQueryNews, 
-    required this.getCountryNews
-  }) : super(NewsInitial()) {
+  NewsBloc({required this.getQueryNews, required this.getCountryNews})
+      : super(NewsInitial()) {
     on<GetQueryNewsEvent>((event, emit) async {
       try {
         // First emit loading state
         emit(QueryNewsLoading());
         print('Emitted QueryNewsLoading state');
 
+        country = 'all';
+
         // Get the result
-        final result = await getQueryNews(GetQueryNewsParams(query: event.query));
-        
+        final result =
+            await getQueryNews(GetQueryNewsParams(query: event.query));
+
         // Handle the result
         result.fold(
           (failure) {
@@ -32,7 +34,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
           },
           (newsList) {
             emit(QueryNewsLoaded(news: newsList));
-            print('Emitted QueryNewsLoaded state with ${newsList.length} items');
+            print(
+                'Emitted QueryNewsLoaded state with ${newsList.length} items');
           },
         );
       } catch (e) {
@@ -47,6 +50,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
         emit(CountryNewsLoading());
         print('Emitted CountryNewsLoading state');
 
+        country = event.country;
+
         // Get the result
         final result = await getCountryNews(
           GetCountryNewsParams(
@@ -54,7 +59,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
             category: event.category,
           ),
         );
-        
+
         // Handle the result
         result.fold(
           (failure) {
@@ -63,7 +68,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
           },
           (newsList) {
             emit(CountryNewsLoaded(news: newsList));
-            print('Emitted CountryNewsLoaded state with ${newsList.length} items');
+            print(
+                'Emitted CountryNewsLoaded state with ${newsList.length} items');
           },
         );
       } catch (e) {

@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: BlocProvider(
-        create: (context) => di.sl<NewsBloc>(),
-        child: const HomeScreen(),
+        create: (context) => di.sl<NewsBloc>()..add(GetQueryNewsEvent(query: 'all')),
+        child: HomeScreen(),
       ),
     );
   }

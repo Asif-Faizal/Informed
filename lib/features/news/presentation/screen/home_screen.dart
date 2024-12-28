@@ -6,7 +6,8 @@ import 'package:tdd_clean/features/news/bloc/news_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+  final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +19,17 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
           body: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
+            padding: const EdgeInsets.only(
+                left: 20, right: 20, top: 90),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 _buildSearchSection(context),
+                const SizedBox(height: 10),
+                _buildCountryDropdown(context),
+                const SizedBox(height: 3),
                 _buildNewsList(state),
               ],
             ),
@@ -31,71 +39,149 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchSection(BuildContext context) {
-    final controller = TextEditingController();
-
-    return Column(
+  Widget _buildCountryDropdown(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        TextField(
-          style: TextStyle(color: Colors.deepPurpleAccent.shade400,fontSize: 17,fontWeight: FontWeight.w700),
-          controller: controller,
-          decoration: InputDecoration(
-            fillColor: const Color.fromARGB(255, 243, 235, 255),
-            filled: true,
-            labelText: '    Enter search query',
-            labelStyle: TextStyle(color: Colors.deepPurpleAccent.shade400,fontSize: 15,fontWeight: FontWeight.w600),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(width: 3,color: Colors.deepPurpleAccent.shade200)
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(width: 2,color: Colors.deepPurpleAccent.shade200)
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(width: 3,color: Colors.deepPurpleAccent.shade200)
-            ),
-            suffixIcon: InkWell(
-              onTap: () {
-                final query = controller.text.trim();
-                if (query.isNotEmpty) {
-                  print('Dispatching GetCountryWiseNewsEvent with query: $query');
-                  context.read<NewsBloc>().add(
-                        GetQueryNewsEvent(
-                          query: query,
-                        ),
-                      );
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          elevation: 4,
+          color: const Color.fromARGB(255, 243, 235, 255),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8,bottom: 10, left: 18,right: 13),
+            child: DropdownButton<String>(
+              iconDisabledColor: Colors.deepPurpleAccent.shade400,
+              iconEnabledColor: Colors.deepPurpleAccent.shade400,
+              underline: SizedBox(),
+              style: TextStyle(color: Colors.deepPurpleAccent.shade400,fontSize: 14,fontWeight: FontWeight.bold),
+              elevation: 0,
+              dropdownColor: Color.fromARGB(255, 249, 244, 255),
+              isDense: true,
+              value: context.read<NewsBloc>().country,
+              items: const [
+                DropdownMenuItem(
+                  value: 'all',
+                  child: Text('All  🌎'),
+                ),
+                DropdownMenuItem(
+                  value: 'us',
+                  child: Text('US   🇺🇸'),
+                ),
+                DropdownMenuItem(
+                  value: 'in',
+                  child: Text('IN   🇮🇳'),
+                ),
+                DropdownMenuItem(
+                  value: 'uk',
+                  child: Text('UK   🇬🇧'),
+                ),
+              ],
+              onChanged: (selectedCountry) {
+                if (selectedCountry == 'all') {
+                  final query = controller.text.trim();
+                  if (query == '') {
+                    context.read<NewsBloc>().add(GetQueryNewsEvent(query: 'all'));
+                  } else {
+                    context.read<NewsBloc>().add(GetQueryNewsEvent(query: query));
+                  }
+                } else if (selectedCountry != null) {
+                  final query = controller.text.trim();
+                  context.read<NewsBloc>().add(GetCountryWiseNewsEvent(
+                      country: selectedCountry, category: query));
                 }
               },
-              child: Icon(Icons.search,color: Colors.deepPurpleAccent.shade200,),
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSearchSection(BuildContext context) {
+    return Column(
+      children: [
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+          elevation: 4,
+          color: const Color.fromARGB(255, 243, 235, 255),
+          child: TextField(
+            style: TextStyle(
+                color: Colors.deepPurpleAccent.shade400,
+                fontSize: 17,
+                fontWeight: FontWeight.w700),
+            controller: controller,
+            decoration: InputDecoration(
+              fillColor: const Color.fromARGB(255, 243, 235, 255),
+              filled: true,
+              labelText: '    Enter search query',
+              labelStyle: TextStyle(
+                  color: Colors.deepPurpleAccent.shade400,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                      width: 3, color: Colors.deepPurpleAccent.shade200)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                      width: 2, color: Colors.deepPurpleAccent.shade200)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                      width: 3, color: Colors.deepPurpleAccent.shade200)),
+              suffixIcon: InkWell(
+                onTap: () {
+                  final query = controller.text.trim();
+                  if (query.isNotEmpty) {
+                    print(
+                        'Dispatching GetCountryWiseNewsEvent with query: $query');
+                    context.read<NewsBloc>().add(
+                          GetQueryNewsEvent(
+                            query: query,
+                          ),
+                        );
+                  }
+                },
+                child: Icon(
+                  Icons.search,
+                  color: Colors.deepPurpleAccent.shade200,
+                ),
+              ),
+            ),
             onSubmitted: (value) {
               final value = controller.text.trim();
-                if (value.isNotEmpty) {
-                  print('Dispatching GetCountryWiseNewsEvent with query: $value');
-                  context.read<NewsBloc>().add(
-                        GetQueryNewsEvent(
-                          query: value,
-                        ),
-                      );
-                }
+              if (value.isNotEmpty) {
+                print('Dispatching GetCountryWiseNewsEvent with query: $value');
+                context.read<NewsBloc>().add(
+                      GetQueryNewsEvent(
+                        query: value,
+                      ),
+                    );
+              }
             },
+          ),
         ),
-        const SizedBox(height: 20),
       ],
     );
   }
 
   Widget _buildShimmerLoading() {
     return Shimmer.fromColors(
-      baseColor:  const Color.fromARGB(255, 243, 235, 255),
-      highlightColor:Colors.white,
+      baseColor: const Color.fromARGB(255, 243, 235, 255),
+      highlightColor: Colors.white,
       child: ListView.builder(
+        shrinkWrap: true, // Add this
+        physics: const BouncingScrollPhysics(), // Add this
+        padding: EdgeInsets.zero,
         itemCount: 5,
         itemBuilder: (context, index) {
           return Card(
+            elevation: 4,
             margin: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,8 +189,10 @@ class HomeScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
                     width: double.infinity,
                     height: 200,
                   ),
@@ -159,7 +247,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildNewsList(NewsState state) {
-    return Expanded(
+    return Flexible(
       child: Builder(
         builder: (context) {
           print('Building news list with state: $state');
@@ -169,28 +257,34 @@ class HomeScreen extends StatelessWidget {
           }
 
           if (state is CountryNewsLoaded || state is QueryNewsLoaded) {
-            final articles = state is CountryNewsLoaded 
-                ? state.news 
+            final articles = state is CountryNewsLoaded
+                ? state.news
                 : (state as QueryNewsLoaded).news;
 
             return ListView.builder(
+              shrinkWrap: true, // Add this
+              physics: const BouncingScrollPhysics(), // Add this
+              padding: EdgeInsets.zero,
               itemCount: articles.length,
               itemBuilder: (context, index) {
                 final article = articles[index];
                 return Card(
-                  color:  const Color.fromARGB(255, 243, 235, 255),
+                  elevation: 4,
+                  color: const Color.fromARGB(255, 243, 235, 255),
                   margin: const EdgeInsets.all(8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (article.urlToImage != null)
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 15),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 15),
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.deepPurpleAccent.shade100,width: 1)
-                            ),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                    color: Colors.deepPurpleAccent.shade100,
+                                    width: 1)),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: Image.network(
@@ -226,24 +320,30 @@ class HomeScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             Row(
                               children: [
-                                Icon(Icons.source, size: 16, color:Colors.deepPurpleAccent.shade200),
+                                Icon(Icons.source,
+                                    size: 16,
+                                    color: Colors.deepPurpleAccent.shade200),
                                 const SizedBox(width: 4),
                                 Text(
                                   article.sourceName,
                                   style: TextStyle(
-                                    color:Colors.deepPurpleAccent.shade200,
+                                    color: Colors.deepPurpleAccent.shade200,
                                     fontSize: 14,
                                   ),
                                 ),
                                 if (article.author != null) ...[
                                   const SizedBox(width: 16),
-                                  Icon(Icons.person, size: 16, color:Colors.deepPurpleAccent.shade200,),
+                                  Icon(
+                                    Icons.person,
+                                    size: 16,
+                                    color: Colors.deepPurpleAccent.shade200,
+                                  ),
                                   const SizedBox(width: 4),
                                   Expanded(
                                     child: Text(
                                       article.author!,
                                       style: TextStyle(
-                                        color:Colors.deepPurpleAccent.shade200,
+                                        color: Colors.deepPurpleAccent.shade200,
                                         fontSize: 14,
                                       ),
                                       overflow: TextOverflow.ellipsis,
@@ -274,11 +374,18 @@ class HomeScreen extends StatelessWidget {
                                 fontSize: 14,
                               ),
                             ),
-                            SizedBox(height: 3,),
+                            SizedBox(
+                              height: 3,
+                            ),
                             InkWell(
-                              child:  Text('read more...',style: TextStyle(color: Colors.deepPurpleAccent.shade200,fontSize: 14,fontWeight: FontWeight.bold)),
+                              child: Text('read more...',
+                                  style: TextStyle(
+                                      color: Colors.deepPurpleAccent.shade200,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold)),
                               onTap: () async {
-                                if (await canLaunchUrl(Uri.parse(article.url))) {
+                                if (await canLaunchUrl(
+                                    Uri.parse(article.url))) {
                                   await launchUrl(Uri.parse(article.url));
                                 }
                               },
