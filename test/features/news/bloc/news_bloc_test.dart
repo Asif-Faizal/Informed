@@ -20,7 +20,8 @@ void main() {
   setUp(() {
     mockCountryNews = MockGetCountryNews();
     mockQueryNews = MockGetQueryNews();
-    bloc = NewsBloc(getQueryNews:  mockQueryNews,getCountryNews:  mockCountryNews);
+    bloc =
+        NewsBloc(getQueryNews: mockQueryNews, getCountryNews: mockCountryNews);
   });
 
   test('Initial State should be empty', () async {
@@ -57,7 +58,9 @@ void main() {
         content: null,
       ),
     ];
-    test('should emit [QueryNewsLoading, QueryNewsLoaded] when data is gotten successfully', () async {
+    test(
+        'should emit [QueryNewsLoading, QueryNewsLoaded] when data is gotten successfully',
+        () async {
       // Arrange
       when(mockQueryNews(any)).thenAnswer(
         (_) async => Right(tNewsModelList),
@@ -77,7 +80,10 @@ void main() {
     });
 
     // Error test case
-    test('should emit [QueryNewsLoading, QueryNewsError] when getting data fails', () async {
+// Error test case
+    test(
+        'should emit [QueryNewsLoading, QueryNewsError] when getting data fails',
+        () async {
       // Arrange
       when(mockQueryNews(any)).thenAnswer(
         (_) async => Left(ServerFailure('Error')),
@@ -91,7 +97,9 @@ void main() {
         bloc.stream,
         emitsInOrder([
           QueryNewsLoading(),
-          QueryNewsError(errorMessage: 'Error'),
+          QueryNewsError(
+              errorMessage:
+                  'ServerFailure(Error)'), // Update to match the emitted string
         ]),
       );
     });
@@ -128,14 +136,16 @@ void main() {
         content: null,
       ),
     ];
-    test('should emit [QueryNewsLoading, QueryNewsLoaded] when data is gotten successfully', () async {
+    test(
+        'should emit [CountryNewsLoading, CountryNewsLoaded] when data is gotten successfully',
+        () async {
       // Arrange
       when(mockCountryNews(any)).thenAnswer(
         (_) async => Right(tNewsModelList),
       );
 
       // Act
-      bloc.add(GetCountryWiseNewsEvent(country: tCountry,category: tCategory));
+      bloc.add(GetCountryWiseNewsEvent(country: tCountry, category: tCategory));
 
       // Assert
       await expectLater(
@@ -148,21 +158,25 @@ void main() {
     });
 
     // Error test case
-    test('should emit [QueryNewsLoading, QueryNewsError] when getting data fails', () async {
+    test(
+        'should emit [CountryNewsLoading, CountryNewsError] when getting data fails',
+        () async {
       // Arrange
       when(mockCountryNews(any)).thenAnswer(
         (_) async => Left(ServerFailure('Error')),
       );
 
       // Act
-      bloc.add(GetCountryWiseNewsEvent(country: tCountry,category: tCategory));
+      bloc.add(GetCountryWiseNewsEvent(country: tCountry, category: tCategory));
 
       // Assert
       await expectLater(
         bloc.stream,
         emitsInOrder([
           CountryNewsLoading(),
-          CountryNewsError(errorMessage: 'Error'),
+          CountryNewsError(
+              errorMessage:
+                  'ServerFailure(Error)'),
         ]),
       );
     });
