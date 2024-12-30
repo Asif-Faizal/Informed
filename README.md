@@ -4,6 +4,8 @@
 
 Informed is a News app built with Flutter's Test-Driven Development (TDD) and Clean Architecture with 49 tests. It focuses on modularity, testability, scalability and maintainability.
 
+![Untitled design](https://github.com/user-attachments/assets/dcd5afae-fa1f-4ddd-8159-5b3ad1b1db93)
+
 ## API
 ### URLs
 News by Query
