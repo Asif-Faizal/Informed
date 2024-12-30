@@ -1051,7 +1051,7 @@ test('should perform GET request on a URL with query', () async {
     // assert
     verify(mockClient.get(
       Uri.parse(
-        "https://newsapi.org/v2/everything?q=$tQuery&sortBy=publishedAt&apiKey=d26344a4cc7045a895af69f018609a64",
+        "https://newsapi.org/v2/everything?q=$tQuery&sortBy=publishedAt&apiKey=API_KEY",
       ),
       headers: {
         'Content-Type': 'application/json',
@@ -1099,7 +1099,7 @@ class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
       String country, String category) async {
     final response = await client.get(
       Uri.parse(
-        "https://newsapi.org/v2/top-headlines?country=$country&category=$category&apiKey=d26344a4cc7045a895af69f018609a64",
+        "https://newsapi.org/v2/top-headlines?country=$country&category=$category&apiKey=API_KEY",
       ),
       headers: {
         'Content-Type': 'application/json',
@@ -1121,7 +1121,7 @@ class NewsRemoteDatasourceImpl implements NewsRemoteDatasource {
   Future<List<NewsModel>> getQueryNews(String query) async {
     final response = await client.get(
       Uri.parse(
-        "https://newsapi.org/v2/everything?q=$query&sortBy=publishedAt&apiKey=d26344a4cc7045a895af69f018609a64",
+        "https://newsapi.org/v2/everything?q=$query&sortBy=publishedAt&apiKey=API_KEY",
       ),
       headers: {
         'Content-Type': 'application/json',
